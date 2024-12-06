@@ -22,7 +22,7 @@ fn part2(inp: &str) -> usize {
                 let line = line
                     .iter()
                     .enumerate()
-                    .filter(|(j, v)| *j != i)
+                    .filter(|(j, _v)| *j != i)
                     .map(|(_, v)| v);
                 let mut diffs = line.tuple_windows().map(|(a, b)| *a as isize - *b as isize);
                 diffs.clone().all(|v| (1..=3).contains(&v)) || diffs.all(|v| (-3..=-1).contains(&v))

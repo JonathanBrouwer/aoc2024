@@ -1,7 +1,5 @@
 use std::cmp::Ordering;
 use std::collections::HashSet;
-use itertools::Itertools;
-use petgraph::prelude::*;
 
 fn part1(inp: &str) -> usize {
     let (constraints, tests) = parse_input(inp);
@@ -9,7 +7,7 @@ fn part1(inp: &str) -> usize {
     let mut sum = 0;
     'test: for test in tests {
         for i in 0..test.len() {
-            for j in i+1 .. test.len() {
+            for j in i + 1..test.len() {
                 if constraints.contains(&(test[j], test[i])) {
                     continue 'test;
                 }
@@ -27,14 +25,14 @@ fn part2(inp: &str) -> usize {
     for mut test in tests {
         let mut correct = true;
         for i in 0..test.len() {
-            for j in i+1 .. test.len() {
+            for j in i + 1..test.len() {
                 if constraints.contains(&(test[j], test[i])) {
                     correct = false;
                 }
             }
         }
         if correct {
-            continue
+            continue;
         }
 
         test.sort_by(|a, b| {
@@ -46,7 +44,7 @@ fn part2(inp: &str) -> usize {
                 Ordering::Equal
             }
         });
-        sum += test[test.len()/2];
+        sum += test[test.len() / 2];
     }
 
     sum
@@ -54,12 +52,18 @@ fn part2(inp: &str) -> usize {
 
 fn parse_input(inp: &str) -> (HashSet<(usize, usize)>, Vec<Vec<usize>>) {
     let (pairs, rules) = inp.split_once("\n\n").unwrap();
-    let pairs = pairs.lines().map(|line| {
-        let (a, b) = line.split_once("|").unwrap();
-        (a.parse().unwrap(), b.parse().unwrap())
-    }).collect();
+    let pairs = pairs
+        .lines()
+        .map(|line| {
+            let (a, b) = line.split_once("|").unwrap();
+            (a.parse().unwrap(), b.parse().unwrap())
+        })
+        .collect();
 
-    let tests = rules.lines().map(|line| line.split(",").map(|v| v.parse().unwrap()).collect()).collect();
+    let tests = rules
+        .lines()
+        .map(|line| line.split(",").map(|v| v.parse().unwrap()).collect())
+        .collect();
 
     (pairs, tests)
 }

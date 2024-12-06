@@ -11,7 +11,7 @@ fn part1(inp: &str) -> usize {
 }
 
 fn part2(inp: &str) -> usize {
-    let (mut v1, mut v2) = parse_input(inp);
+    let (v1, v2) = parse_input(inp);
     let v2 = v2.into_iter().counts();
     v1.into_iter().map(|v| v * v2.get(&v).unwrap_or(&0)).sum()
 }
