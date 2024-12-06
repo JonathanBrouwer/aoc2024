@@ -1,16 +1,16 @@
 fn part1(inp: &str) -> usize {
-    let input = parse_input(inp);
+    parse_input(inp);
 
-    return 0;
+    0
 }
 
 fn part2(inp: &str) -> usize {
-    let input = parse_input(inp);
+    parse_input(inp);
 
-    return 0;
+    0
 }
 
-fn parse_input(inp: &str) -> () {}
+fn parse_input(inp: &str) {}
 
 #[cfg(test)]
 mod tests {

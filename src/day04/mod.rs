@@ -36,7 +36,7 @@ fn add(pos: (usize, usize), times: usize, dir: (usize, usize)) -> (usize, usize)
     )
 }
 
-fn get(field: &Vec<Vec<char>>, pos: (usize, usize)) -> Option<char> {
+fn get(field: &[Vec<char>], pos: (usize, usize)) -> Option<char> {
     field.get(pos.0)?.get(pos.1).copied()
 }
 
@@ -59,11 +59,7 @@ fn part2(inp: &str) -> usize {
 }
 
 fn is_ms_pair(a: char, b: char) -> bool {
-    match (a, b) {
-        ('M', 'S') => true,
-        ('S', 'M') => true,
-        _ => false,
-    }
+    matches!((a, b), ('M', 'S') | ('S', 'M'))
 }
 
 fn parse_input(inp: &str) -> Vec<Vec<char>> {

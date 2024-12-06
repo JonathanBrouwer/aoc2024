@@ -4,10 +4,7 @@ fn part1(inp: &str) -> usize {
     let (mut v1, mut v2) = parse_input(inp);
     v1.sort();
     v2.sort();
-    v1.into_iter()
-        .zip(v2.into_iter())
-        .map(|(v1, v2)| v1.abs_diff(v2))
-        .sum()
+    v1.into_iter().zip(v2).map(|(v1, v2)| v1.abs_diff(v2)).sum()
 }
 
 fn part2(inp: &str) -> usize {

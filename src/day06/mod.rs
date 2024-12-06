@@ -93,7 +93,7 @@ fn parse_input(inp: &str) -> (Vec<Vec<bool>>, (usize, usize)) {
             l.chars()
                 .enumerate()
                 .find(|c| c.1 == '^')
-                .map(|(x, c)| (y, x))
+                .map(|(x, _c)| (y, x))
         })
         .unwrap();
     (
