@@ -6,17 +6,13 @@ fn part1(inp: &str) -> usize {
 
     let mut set = HashSet::<(usize, usize)>::new();
     for (_, points) in coords {
-        for (&(y1, x1), &(y2, x2)) in points.iter().tuple_combinations() {
+        for (&(y1, x1), &(y2, x2)) in points.iter()
+            .cartesian_product(points.iter())
+            .filter(|(l,r)| l!=r) {
             let y3 = (2 * y1).wrapping_sub(y2);
             let x3 = (2 * x1).wrapping_sub(x2);
             if y3 < size_y && x3 < size_x {
                 set.insert((y3, x3));
-            }
-
-            let y4 = (2 * y2).wrapping_sub(y1);
-            let x4 = (2 * x2).wrapping_sub(x1);
-            if y4 < size_y && x4 < size_x {
-                set.insert((y4, x4));
             }
         }
     }
@@ -29,22 +25,14 @@ fn part2(inp: &str) -> usize {
 
     let mut set = HashSet::<(usize, usize)>::new();
     for (_, points) in coords {
-        for (&(y1, x1), &(y2, x2)) in points.iter().tuple_combinations() {
+        for (&(y1, x1), &(y2, x2)) in points.iter()
+            .cartesian_product(points.iter())
+            .filter(|(l,r)| l!=r) {
             for i in 0.. {
                 let y3 = ((i + 1) * y1).wrapping_sub(i * y2);
                 let x3 = ((i + 1) * x1).wrapping_sub(i * x2);
                 if y3 < size_y && x3 < size_x {
                     set.insert((y3, x3));
-                } else {
-                    break;
-                }
-            }
-
-            for i in 0.. {
-                let y4 = ((i + 1) * y2).wrapping_sub(i * y1);
-                let x4 = ((i + 1) * x2).wrapping_sub(i * x1);
-                if y4 < size_y && x4 < size_x {
-                    set.insert((y4, x4));
                 } else {
                     break;
                 }
