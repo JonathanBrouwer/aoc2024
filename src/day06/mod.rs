@@ -1,4 +1,3 @@
-use itertools::Itertools;
 use std::collections::HashSet;
 
 fn part1(inp: &str) -> usize {
@@ -98,8 +97,8 @@ fn parse_input(inp: &str) -> (Vec<Vec<bool>>, (usize, usize)) {
         .unwrap();
     (
         inp.lines()
-            .map(|line| line.chars().map(|c| c == '#').collect_vec())
-            .collect_vec(),
+            .map(|line| line.chars().map(|c| c == '#').collect())
+            .collect(),
         pos,
     )
 }
