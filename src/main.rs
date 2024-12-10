@@ -10,5 +10,6 @@ mod day08;
 mod day09;
 #[allow(unused_variables)]
 mod template;
+mod day10;
 
 fn main() {}
