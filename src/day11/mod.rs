@@ -6,7 +6,6 @@ fn part1(inp: &str) -> usize {
 
 fn part2(inp: &str) -> usize {
     solve(inp, 75)
-
 }
 
 fn solve(inp: &str, count: usize) -> usize {
@@ -20,7 +19,7 @@ fn solve(inp: &str, count: usize) -> usize {
         for (k, v) in map {
             if k == 0 {
                 *new_map.entry(1).or_insert(0) += v;
-                continue
+                continue;
             }
             let digit_count = k.ilog10() + 1;
             if digit_count % 2 == 0 {

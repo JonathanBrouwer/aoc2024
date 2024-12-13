@@ -9,9 +9,10 @@ fn part2(inp: &str) -> usize {
 }
 
 fn solve(inp: &str, part2: bool) -> usize {
-    let graph: Vec<Vec<u32>> = inp.lines().map(|line| {
-        line.chars().map(|c| c.to_digit(10).unwrap()).collect()
-    }).collect();
+    let graph: Vec<Vec<u32>> = inp
+        .lines()
+        .map(|line| line.chars().map(|c| c.to_digit(10).unwrap()).collect())
+        .collect();
 
     let mut solutions = 0;
     for y in 0..graph.len() {
@@ -24,13 +25,18 @@ fn solve(inp: &str, part2: bool) -> usize {
                 while let Some((y, x)) = bfs.pop_back() {
                     if graph[y][x] == 9 {
                         solutions += 1;
-                        continue
+                        continue;
                     }
-                    for (ny, nx) in [(y+1, x), (y.wrapping_sub(1), x), (y, x+1), (y, x.wrapping_sub(1))] {
+                    for (ny, nx) in [
+                        (y + 1, x),
+                        (y.wrapping_sub(1), x),
+                        (y, x + 1),
+                        (y, x.wrapping_sub(1)),
+                    ] {
                         if let Some(v) = graph.get(ny).and_then(|row| row.get(nx)) {
                             if *v == graph[y][x] + 1 {
                                 if !seen.insert((ny, nx)) && !part2 {
-                                    continue
+                                    continue;
                                 }
                                 bfs.push_back((ny, nx));
                             }
@@ -84,7 +90,6 @@ mod tests {
         let result = part2(include_str!("example3"));
         assert_eq!(227, result);
     }
-
 
     #[test]
     fn test_part2_real() {
