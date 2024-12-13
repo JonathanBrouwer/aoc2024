@@ -21,3 +21,4 @@ num = "0.4.3"
 regex = "1.11.1"
 petgraph = "0.6.5"
 clap = { version = "4.5.23", features = ["derive"] }
+scan_fmt = "0.2.6"
