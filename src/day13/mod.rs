@@ -30,11 +30,11 @@ fn solve(but_a: (usize, usize), but_b: (usize, usize), target: (usize, usize)) -
     let inv_c = -c;
     let inv_d = a;
 
-    let a_presses = (inv_a * target.0 as isize + inv_b * target.1 as isize);
+    let a_presses = inv_a * target.0 as isize + inv_b * target.1 as isize;
     if a_presses % det != 0 {
         return 0;
     }
-    let b_presses = (inv_c * target.0 as isize + inv_d * target.1 as isize);
+    let b_presses = inv_c * target.0 as isize + inv_d * target.1 as isize;
     if b_presses % det != 0 {
         return 0;
     }
