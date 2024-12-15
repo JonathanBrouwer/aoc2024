@@ -1,10 +1,9 @@
-use std::fmt::{Display, Formatter};
 use itertools::Itertools;
+use std::fmt::{Display, Formatter};
 
 fn part1(inp: &str) -> usize {
     let (mut map, moves, (mut py, mut px)) = parse_input(inp);
     'outer: for (my, mx) in moves {
-
         let fy = (py as isize + my) as usize;
         let fx = (px as isize + mx) as usize;
 
@@ -12,12 +11,8 @@ fn part1(inp: &str) -> usize {
             let ny = (py as isize + i * my) as usize;
             let nx = (px as isize + i * mx) as usize;
             match map[ny][nx] {
-                Tile::Box => {
-                    continue
-                }
-                Tile::Wall => {
-                    continue 'outer
-                }
+                Tile::Box => continue,
+                Tile::Wall => continue 'outer,
                 Tile::Empty => {
                     if map[fy][fx] == Tile::Box {
                         map[fy][fx] = Tile::Empty;
@@ -25,7 +20,7 @@ fn part1(inp: &str) -> usize {
                     }
                     py = fy;
                     px = fx;
-                    continue 'outer
+                    continue 'outer;
                 }
             }
         }
@@ -43,7 +38,12 @@ fn part1(inp: &str) -> usize {
     sum
 }
 
-fn add_box(queue: &mut Vec<(usize, usize)>, pos: (usize, usize), map: &Vec<Vec<LargeTile>>, my: isize) {
+fn add_box(
+    queue: &mut Vec<(usize, usize)>,
+    pos: (usize, usize),
+    map: &Vec<Vec<LargeTile>>,
+    my: isize,
+) {
     match map[pos.0][pos.1] {
         LargeTile::Wall | LargeTile::Empty => {
             queue.push(pos);
@@ -76,11 +76,21 @@ fn display_map(map: &Vec<Vec<LargeTile>>, py: usize, px: usize) {
 fn part2(inp: &str) -> usize {
     let (map, moves, (mut py, mut px)) = parse_input(inp);
     px *= 2;
-    let mut map = map.into_iter().map(|row| row.into_iter().flat_map(|v| match v {
-        Tile::Box => [LargeTile::Box(BoxSide::Left), LargeTile::Box(BoxSide::Right)],
-        Tile::Wall => [LargeTile::Wall, LargeTile::Wall],
-        Tile::Empty => [LargeTile::Empty, LargeTile::Empty],
-    }).collect_vec()).collect_vec();
+    let mut map = map
+        .into_iter()
+        .map(|row| {
+            row.into_iter()
+                .flat_map(|v| match v {
+                    Tile::Box => [
+                        LargeTile::Box(BoxSide::Left),
+                        LargeTile::Box(BoxSide::Right),
+                    ],
+                    Tile::Wall => [LargeTile::Wall, LargeTile::Wall],
+                    Tile::Empty => [LargeTile::Empty, LargeTile::Empty],
+                })
+                .collect_vec()
+        })
+        .collect_vec();
 
     'outer: for (my, mx) in moves {
         let fy = (py as isize + my) as usize;
@@ -89,16 +99,10 @@ fn part2(inp: &str) -> usize {
         add_box(&mut queue, (fy, fx), &map, my);
 
         'inner: for i in 0.. {
-            let Some(&(ny, nx)) = queue.get(i) else {
-                break
-            };
+            let Some(&(ny, nx)) = queue.get(i) else { break };
             match map[ny][nx] {
-                LargeTile::Wall => {
-                    continue 'outer
-                }
-                LargeTile::Empty => {
-                    continue 'inner
-                }
+                LargeTile::Wall => continue 'outer,
+                LargeTile::Empty => continue 'inner,
                 LargeTile::Box(_) => {
                     let nny = (ny as isize + my) as usize;
                     let nnx = (nx as isize + mx) as usize;
@@ -109,7 +113,7 @@ fn part2(inp: &str) -> usize {
 
         for (y, x) in queue.into_iter().rev() {
             if map[y][x] == LargeTile::Empty {
-                continue
+                continue;
             }
             map[(y as isize + my) as usize][(x as isize + mx) as usize] = map[y][x];
             map[y][x] = LargeTile::Empty;
@@ -131,64 +135,76 @@ fn part2(inp: &str) -> usize {
     sum
 }
 
-
-
-
 #[derive(Copy, Clone, Eq, PartialEq)]
 enum LargeTile {
     Wall,
     Box(BoxSide),
-    Empty
+    Empty,
 }
 
 impl Display for LargeTile {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", match self {
-            LargeTile::Wall => '#',
-            LargeTile::Box(BoxSide::Left) => '[',
-            LargeTile::Box(BoxSide::Right) => ']',
-            LargeTile::Empty => '.',
-        })
+        write!(
+            f,
+            "{}",
+            match self {
+                LargeTile::Wall => '#',
+                LargeTile::Box(BoxSide::Left) => '[',
+                LargeTile::Box(BoxSide::Right) => ']',
+                LargeTile::Empty => '.',
+            }
+        )
     }
 }
 
 #[derive(Copy, Clone, Eq, PartialEq)]
 enum BoxSide {
     Left,
-    Right
+    Right,
 }
 
 #[derive(Eq, PartialEq)]
 enum Tile {
     Wall,
     Box,
-    Empty
+    Empty,
 }
 
 fn parse_input(inp: &str) -> (Vec<Vec<Tile>>, Vec<(isize, isize)>, (usize, usize)) {
     let (map, moves) = inp.split_once("\n\n").unwrap();
 
     let mut start_pos = (0usize, 0usize);
-    let map = map.lines().enumerate().map(|(y, line)| {
-        line.chars().enumerate().map(|(x, c)| match c {
-            '#' => Tile::Wall,
-            'O' => Tile::Box,
-            '.' => Tile::Empty,
-            '@' => {
-                start_pos = (y, x);
-                Tile::Empty
-            }
-            _ => unreachable!()
-        }).collect_vec()
-    }).collect_vec();
+    let map = map
+        .lines()
+        .enumerate()
+        .map(|(y, line)| {
+            line.chars()
+                .enumerate()
+                .map(|(x, c)| match c {
+                    '#' => Tile::Wall,
+                    'O' => Tile::Box,
+                    '.' => Tile::Empty,
+                    '@' => {
+                        start_pos = (y, x);
+                        Tile::Empty
+                    }
+                    _ => unreachable!(),
+                })
+                .collect_vec()
+        })
+        .collect_vec();
 
-    let moves = moves.chars().filter(|c| !c.is_whitespace()).map(|c| match c {
-        '<' => (0, -1),
-        '^' => (-1, 0),
-        '>' => (0, 1),
-        'v' => (1, 0),
-        _ => unreachable!(),
-    }).collect_vec();
+    let moves = moves
+        .chars()
+        .filter(|c| !c.is_whitespace())
+        .map(|c| match c {
+            '<' => (0, -1),
+            '^' => (-1, 0),
+            '>' => (0, 1),
+            'v' => (1, 0),
+            _ => unreachable!(),
+        })
+        .collect_vec();
 
     (map, moves, start_pos)
 }
