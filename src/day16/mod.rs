@@ -1,5 +1,5 @@
-use std::cmp::Ordering;
 use itertools::Itertools;
+use std::cmp::Ordering;
 use std::collections::{BinaryHeap, HashMap, HashSet};
 
 #[derive(Copy, Clone, Eq, PartialEq, Hash)]
@@ -7,16 +7,18 @@ enum Direction {
     North,
     East,
     South,
-    West
+    West,
 }
 
 impl Direction {
-    pub fn turn_right(self) -> Self {match self {
-        Direction::North => Direction::East,
-        Direction::East => Direction::South,
-        Direction::South => Direction::West,
-        Direction::West => Direction::North,
-    }}
+    pub fn turn_right(self) -> Self {
+        match self {
+            Direction::North => Direction::East,
+            Direction::East => Direction::South,
+            Direction::South => Direction::West,
+            Direction::West => Direction::North,
+        }
+    }
 
     pub fn turn_left(self) -> Self {
         self.turn_right().turn_right().turn_right()
@@ -52,10 +54,7 @@ impl State {
         // Turn left, right
         for dir in [self.pos.dir.turn_left(), self.pos.dir.turn_right()] {
             states.push(State {
-                pos: Position {
-                    dir,
-                    ..self.pos
-                },
+                pos: Position { dir, ..self.pos },
                 score: self.score + 1000,
             })
         }
@@ -67,11 +66,7 @@ impl State {
         let x = (self.pos.x as isize + dx) as usize;
         if map[y][x] != '#' {
             states.push(State {
-                pos: Position {
-                    y,
-                    x,
-                    ..self.pos
-                },
+                pos: Position { y, x, ..self.pos },
                 score: self.score + 1,
             });
         }
@@ -109,10 +104,10 @@ fn part1(inp: &str) -> usize {
 
     while let Some(next) = heap.pop() {
         if next.pos.y == end_y && next.pos.x == end_x {
-            return next.score
+            return next.score;
         }
         if distances.contains_key(&next.pos) {
-            continue
+            continue;
         }
         distances.insert(next.pos, next.score);
 
@@ -140,12 +135,12 @@ fn part2(inp: &str) -> usize {
     let mut end_state = None;
     while let Some(next) = heap.pop() {
         if distances.contains_key(&next.pos) {
-            continue
+            continue;
         }
         distances.insert(next.pos, next.score);
         if next.pos.y == end_y && next.pos.x == end_x {
             end_state = Some(next);
-            break
+            break;
         }
 
         heap.extend(next.neighbours(&map));
@@ -157,18 +152,18 @@ fn part2(inp: &str) -> usize {
     while let Some(mut next) = queue.pop() {
         if let Some(d) = distances.remove(&next.pos) {
             if d != next.score {
-                continue
+                continue;
             }
             positions.insert((next.pos.y, next.pos.x));
         } else {
-            continue
+            continue;
         }
 
         next.pos.dir = next.pos.dir.turn_left().turn_left();
         for mut nb in next.neighbours(&map) {
             nb.pos.dir = nb.pos.dir.turn_left().turn_left();
             let Some(nb_score) = (2 * next.score).checked_sub(nb.score) else {
-                continue
+                continue;
             };
             nb.score = nb_score;
 
