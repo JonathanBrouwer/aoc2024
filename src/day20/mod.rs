@@ -1,5 +1,5 @@
 use itertools::Itertools;
-use std::collections::{HashSet, VecDeque};
+use std::collections::VecDeque;
 
 fn part1(inp: &str, at_least: usize) -> usize {
     let (map, (_sy, _sx), (ey, ex)) = parse_input(inp);

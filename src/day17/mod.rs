@@ -49,7 +49,7 @@ impl Computah {
                 }
                 // BXC
                 4 => {
-                    self.b = self.b ^ self.c;
+                    self.b ^= self.c;
                     pc += 2;
                 }
                 // OUT
@@ -115,7 +115,7 @@ impl Computah {
                 }
                 // BXC
                 4 => {
-                    self.b = self.b ^ self.c;
+                    self.b ^= self.c;
                     pc += 2;
                 }
                 // OUT
