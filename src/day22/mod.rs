@@ -12,30 +12,19 @@ fn part1(inp: &str) -> usize {
 fn part2(inp: &str) -> usize {
     let mut scores = HashMap::new();
 
-    for n0 in parse_input(inp) {
-        let n1 = next(n0);
-        let n2 = next(n1);
-        let n3 = next(n2);
-        let mut num = n3;
-
-        let n0 = (n0 % 10) as isize;
-        let n1 = (n1 % 10) as isize;
-        let n2 = (n2 % 10) as isize;
-        let n3 = (n3 % 10) as isize;
-
-        let mut window = [
-            0,
-            n1 - n0,
-            n2 - n1,
-            n3 - n2,
-        ];
+    for mut num in parse_input(inp) {
+        let mut window = [0; 4];
         let mut seen = HashSet::new();
 
-        for _ in 0..2000 - 4 {
+        for i in 0..2000 {
             window.rotate_left(1);
             let next_num = next(num);
             window[3] = (next_num % 10) as isize - (num % 10) as isize;
             num = next_num;
+
+            if i < 4 {
+                continue
+            }
 
             if !seen.insert(window) {
                 continue;
