@@ -152,7 +152,7 @@ fn part1(inp: &str) -> String {
 }
 
 fn part2(inp: &str) -> usize {
-    let (_, b, c, ops) = parse_input(inp);
+    let (_, _b, _c, ops) = parse_input(inp);
     let iter = ops.iter().copied().rev();
 
     part2_rec(0, iter, 0).unwrap()
@@ -243,7 +243,6 @@ mod tests {
         let result = part2(inp);
         println!("Part 2: {}", result);
 
-        let (regs, program) = inp.split_once("\n\n").unwrap();
         let mut computer = Computah {
             a: result,
             b,
