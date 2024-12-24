@@ -75,16 +75,22 @@ fn part2(inp: &str, indirections: usize) -> usize {
         assert!(au + ur + ra <= ar + ru + ua);
     }
 
-
     let mut sum = 0;
     for code in parse_input(inp) {
         let mut distance = 0;
 
         let (mut prev_y, mut prev_x) = (3, 2);
         for digit in &code {
-            let (y, x) = NUMPAD_KEYS.iter().enumerate().flat_map(|(y, row)| {
-                row.iter().find_position(|v| *v == digit).map(|(x, _)| (y, x))
-            }).next().unwrap();
+            let (y, x) = NUMPAD_KEYS
+                .iter()
+                .enumerate()
+                .flat_map(|(y, row)| {
+                    row.iter()
+                        .find_position(|v| *v == digit)
+                        .map(|(x, _)| (y, x))
+                })
+                .next()
+                .unwrap();
 
             let old_distance = distance;
             if y < prev_y {
@@ -99,12 +105,15 @@ fn part2(inp: &str, indirections: usize) -> usize {
                     let left = prev_x - x;
 
                     // up & left
-                    distance += up + left + 1 + if prev_y == 3 && x == 0 {
-                        au + ul + la
-                    } else {
-                        assert!(al + lu + ua <= au + ul + la);
-                        al + lu + ua
-                    };
+                    distance += up
+                        + left
+                        + 1
+                        + if prev_y == 3 && x == 0 {
+                            au + ul + la
+                        } else {
+                            assert!(al + lu + ua <= au + ul + la);
+                            al + lu + ua
+                        };
                 } else {
                     // only up
                     distance += up + au + ua + 1;
@@ -115,12 +124,15 @@ fn part2(inp: &str, indirections: usize) -> usize {
                     let right = x - prev_x;
 
                     // down & right
-                    distance += down + right + 1 + if prev_x == 0 && y == 3 {
-                        ar + rd + da
-                    } else {
-                        assert!(ad + dr + ra <= ar + rd + da);
-                        ad + dr + ra
-                    }
+                    distance += down
+                        + right
+                        + 1
+                        + if prev_x == 0 && y == 3 {
+                            ar + rd + da
+                        } else {
+                            assert!(ad + dr + ra <= ar + rd + da);
+                            ad + dr + ra
+                        }
                 } else if x < prev_x {
                     let left = prev_x - x;
 
@@ -156,7 +168,10 @@ fn part2(inp: &str, indirections: usize) -> usize {
 
         println!("{code:?}: {distance}");
 
-        sum += distance * (code[0].to_digit(10).unwrap() * 100 + code[1].to_digit(10).unwrap() * 10 + code[2].to_digit(10).unwrap()) as usize;
+        sum += distance
+            * (code[0].to_digit(10).unwrap() * 100
+                + code[1].to_digit(10).unwrap() * 10
+                + code[2].to_digit(10).unwrap()) as usize;
     }
 
     sum

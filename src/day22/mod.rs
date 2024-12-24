@@ -1,12 +1,15 @@
 use std::collections::{HashMap, HashSet};
 
 fn part1(inp: &str) -> usize {
-    parse_input(inp).into_iter().map(|mut num| {
-        for _ in 0..2000 {
-            num = next(num);
-        }
-        num
-    }).sum()
+    parse_input(inp)
+        .into_iter()
+        .map(|mut num| {
+            for _ in 0..2000 {
+                num = next(num);
+            }
+            num
+        })
+        .sum()
 }
 
 fn part2(inp: &str) -> usize {
@@ -23,7 +26,7 @@ fn part2(inp: &str) -> usize {
             num = next_num;
 
             if i < 4 {
-                continue
+                continue;
             }
 
             if !seen.insert(window) {
